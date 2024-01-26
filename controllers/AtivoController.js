@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 
 //Inserir um ativo com usuário relacionado a ela
 const insertAtivo = async (req, res) => {
-    const {codigo, dataCompra, quantidade, valorTotal} = req.body
+    const {codigo, dataCompra, quantidade, preco} = req.body
 
     console.log(req.body)
 
@@ -20,7 +20,7 @@ const insertAtivo = async (req, res) => {
       codigo,
       dataCompra,
       quantidade,
-      valorTotal,
+      preco,
       userId: user._id,
     })
   
@@ -105,7 +105,7 @@ const updateAtivo = async (req, res) => {
     const { codigo,
         dataCompra,
         quantidade,
-        valorTotal,
+        preco,
          } = req.body
  
     const reqUser = req.user
@@ -138,8 +138,8 @@ const updateAtivo = async (req, res) => {
     ativo.quantidade = quantidade;
     }
     
-    if (valorTotal) {
-        ativo.valorTotal = valorTotal;
+    if (preco) {
+        ativo.preco = preco;
     }
     
     await ativo.save();

@@ -8,7 +8,7 @@ const ativoSchema = new Schema({
         type: Number,
         integer: true, // Esta opção é usada para indicar que o número deve ser um inteiro
     }, 
-    valorTotal: Number,
+    preco: Number,
     userId: mongoose.ObjectId, //O tipo tem que ser diff pra guardar o id do usuário
 }, {
     timestamps: true

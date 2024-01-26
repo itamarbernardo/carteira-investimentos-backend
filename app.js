@@ -1,4 +1,4 @@
-require('dotenv').config() //Pra pegar todas as infos do arquivo .env
+require('dotenv').config() //Dá acesso ao process.env Pra pegar todas as infos do arquivo .env
 
 const express = require('express')
 const path = require('path')

@@ -17,7 +17,7 @@ router.post('/', authGuard, ativoInsertValidation(), validate, insertAtivo)
 //validates = recebe o array de erros pra mandar pro front
 //insertAtivo = função no controller
 router.delete('/:id', authGuard, deleteAtivo)
-router.get('/user/:id', authGuard, getUserAtivos)
+router.get('/user', authGuard, getUserAtivos)
 
 //Temos que criar essa aqui em cima pra que o parametro "q" não seja confundido com as rotas de baixo
 router.get('/search', authGuard, searchAtivos)
