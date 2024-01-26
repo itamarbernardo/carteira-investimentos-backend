@@ -40,7 +40,6 @@ const deleteAtivo = async (req, res) => {
     const { id } = req.params
   
     const reqUser = req.user
-  
     try {
         const ativo = await Ativo.findById(new mongoose.Types.ObjectId(id))
     
@@ -49,13 +48,13 @@ const deleteAtivo = async (req, res) => {
         res.status(404).json({ errors: ["Ativo não encontrado!"] })
         return
         }
-    
+
         // Checa se o usuário logado que tá tentando excluir é o dono do ativo
         if (!ativo.userId.equals(reqUser._id)) {
-        res.status(422).json({ errors: ["Ocorreu um erro, tente novamente mais tarde"] })
-        return
+          res.status(422).json({ errors: ["Ocorreu um erro, tente novamente mais tarde"] })
+          return
         }
-    
+
         await Ativo.findByIdAndDelete(ativo._id)
     
         res.status(200).json({ id: ativo._id, message: "Ativo excluído com sucesso." })
@@ -82,6 +81,8 @@ const getUserAtivos = async (req, res) => {
 const getAtivoById = async (req, res) => {
     const { id } = req.params
     
+    const reqUser = req.user
+    
     try {
         const ativo = await Ativo.findById(new mongoose.Types.ObjectId(id))
 
@@ -90,8 +91,12 @@ const getAtivoById = async (req, res) => {
             res.status(404).json({ errors: ["Ativo não encontrado!"] })
             return
         }
-    
-        //O return aqui é OPCIONAL  
+        
+        if(!ativo.userId.equals(reqUser._id)){
+          res.status(404).json({ errors: ["Você não possui permissão para acessar esse ativo!"] })
+          return
+        }
+
         res.status(200).json(ativo)
     } catch (error) {
         res.status(404).json({ errors: ["Ativo não encontrado!"] })
@@ -151,8 +156,12 @@ const updateAtivo = async (req, res) => {
 // Buscar ativos pelo codigo
 const searchAtivos = async (req, res) => {
   const { q } = req.query;
+  const reqUser = req.user;
 
-  const ativos = await Ativo.find({ codigo: new RegExp(q, "i") }).exec(); //Essa pesquisa ignora a case sensitive e vai buscar em qualquer lugar da string
+  const ativos = await Ativo.find({ 
+    codigo: new RegExp(q, "i"),
+    userId: reqUser._id 
+  }).exec(); //Essa pesquisa ignora a case sensitive e vai buscar em qualquer lugar da string
 
   res.status(200).json(ativos);
 };
